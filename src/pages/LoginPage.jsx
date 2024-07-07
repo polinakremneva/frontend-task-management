@@ -14,12 +14,15 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { LogIn } from "lucide-react";
 import { useAuth } from "@/contexts/AuthProvider";
+import { ToastAction } from "@/components/ui/toast";
+import { useToast } from "@/components/ui/use-toast";
 
 function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const { login } = useAuth();
+
+  const { toast } = useToast();
 
   const navigate = useNavigate();
   const handleSubmit = async (ev) => {
@@ -28,12 +31,17 @@ function LoginPage() {
     try {
       await login(userData);
       navigate("/task");
+      toast({
+        title: "Welcome back!",
+        description: "Nice to see you :)",
+        className: " bg-purple-100",
+      });
     } catch (error) {
       console.error("Error logging in:", error);
     }
   };
   return (
-    <Card className="shadow-2xl">
+    <Card className="shadow-2xl w-[20em]">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span>Login</span> <LogIn />
@@ -59,14 +67,24 @@ function LoginPage() {
             />
           </div>
 
-          <Button>Login</Button>
+          <Button type="submit" className=" bg-purple-700 hover:bg-purple-800">
+            Login
+          </Button>
         </form>
       </CardContent>
-      <CardFooter>
+      <CardFooter className=" flex flex-col items-start">
         <p className="text-xs">
           Dont have an account?{" "}
-          <Link className="underline font-bold" to="/auth/register">
+          <Link
+            className="underline font-bold text-purple-800"
+            to="/auth/register"
+          >
             Register
+          </Link>
+        </p>
+        <p>
+          <Link className="underline text-purple-700 text-xs ">
+            Forgotten your password?
           </Link>
         </p>
       </CardFooter>

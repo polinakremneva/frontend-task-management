@@ -9,6 +9,7 @@ import TasksListPage from "./pages/TasksListPage";
 import TaskDetailsPage from "./pages/TaskDetailsPage";
 import { useAuth } from "./contexts/AuthProvider";
 import HistoryPage from "./pages/HistoryPage";
+import ContactPage from "./pages/ContactPage";
 
 function ProtectedRoute({ children }) {
   const { loggedInUser } = useAuth();
@@ -44,6 +45,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="about" element={<HistoryPage />} />
+          <Route path="contact" element={<ContactPage />} />
 
           <Route
             path="task"

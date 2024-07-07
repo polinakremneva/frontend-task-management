@@ -27,16 +27,18 @@ function AboutPage() {
           </span>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="p-4 py-7 bg-white border-none shadow-xl w-[30em]">
-          <div className=" text-gray-800 ">
-            <div className="flex items-center mb-4">
-              <CalendarCheck2 />
-              <h2 className="text-2xl pl-2 font-bold">Welcome to Taskify</h2>
+          <div className="text-gray-800">
+            <div className="flex items-center mb-6">
+              <CalendarCheck2 className="text-purple-700 text-4xl mr-4 animate-bounce" />
+              <h2 className="text-3xl font-bold text-purple-700">
+                Welcome to Taskify
+              </h2>
             </div>
             <p className="text-lg leading-relaxed mb-6">
-              At Taskify, we redefine task management with elegance and
-              efficiency. Our platform empowers individuals and teams to
-              streamline workflows, track progress, and achieve goals
-              effortlessly.
+              <span className="font-bold text-purple-700">Taskify</span>{" "}
+              redefines task management with elegance and efficiency. Our
+              platform empowers individuals and teams to streamline workflows,
+              track progress, and achieve goals effortlessly.
             </p>
             <p className="text-lg leading-relaxed mb-6">
               Discover the power of seamless collaboration and intuitive
@@ -47,10 +49,10 @@ function AboutPage() {
             <div className="flex items-center">
               <a
                 href="/about"
-                className="text-lg font-semibold  hover:rounded-md hover:bg-slate-200 flex items-center"
+                className="text-lg font-semibold text-purple-700 hover:bg-purple-100 py-2 px-4 rounded-md flex items-center transition duration-300"
               >
                 See More
-                <CgMoreO className=" pl-2 text-3xl" />
+                <CgMoreO className="pl-2 text-2xl" />
               </a>
             </div>
           </div>
