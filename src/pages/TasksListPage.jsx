@@ -3,6 +3,13 @@ import { useAuth } from "@/contexts/AuthProvider";
 import Modal from "react-modal";
 import api from "@/services/api.service";
 import { Link } from "react-router-dom";
+import { MdTipsAndUpdates } from "react-icons/md";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "../components/ui/popover";
+import { MdPostAdd } from "react-icons/md";
 import {
   Card,
   CardHeader,
@@ -10,6 +17,8 @@ import {
   CardDescription,
   CardContent,
 } from "../components/ui/card";
+import { LuListTodo } from "react-icons/lu";
+
 import { CheckCircle, Circle } from "react-feather"; // Example icons for checkboxes and pinning
 import { TbPinned, TbPinnedFilled } from "react-icons/tb";
 import {
@@ -21,7 +30,7 @@ import {
 } from "@/components/ui/carousel";
 import { AiFillEdit } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
-import TaskDetailsPage from "./TaskDetailsPage"; // Adjust path as needed
+import { useToast } from "@/components/ui/use-toast";
 
 Modal.setAppElement("#root");
 
@@ -33,10 +42,44 @@ const TasksListPage = () => {
   const [editTaskData, setEditTaskData] = useState({
     title: "",
     description: "",
+    todoList: [{ title: "", isComplete: false }],
   });
+
+  const { toast } = useToast();
 
   const { loggedInUser } = useAuth();
   const currentUserId = loggedInUser ? loggedInUser._id : null;
+
+  const [newTaskData, setNewTaskData] = useState({
+    title: "",
+    description: "",
+    main: "",
+    todoList: "",
+  });
+
+  const handleNewTaskInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewTaskData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const handleAddTask = async () => {
+    try {
+      const response = await api.post("/task", {
+        ...newTaskData,
+      });
+
+      setTasks([...tasks, response.data]);
+      toast({
+        title: "The item was added successfuly!",
+        className: " bg-purple-100",
+      });
+    } catch (error) {
+      console.error("Error creating new task", error);
+    }
+  };
 
   const lightBackgrounds = [
     "bg-blue-200",
@@ -134,6 +177,7 @@ const TasksListPage = () => {
       await api.post(`/task/${taskId}`, {
         title: editTaskData.title,
         description: editTaskData.description,
+        todoList: editTaskData.todoList,
       });
 
       // Update local state after successful API call
@@ -143,20 +187,57 @@ const TasksListPage = () => {
               ...task,
               title: editTaskData.title,
               description: editTaskData.description,
+              todoList: editTaskData.todoList,
             }
           : task
       );
       setTasks(updatedTasks);
       setEditTaskId(null);
-      setEditTaskData({ title: "", description: "" });
+      setEditTaskData({
+        title: "",
+        description: "",
+        todoList: [{ title: "", isComplete: false }],
+      });
+      toast({
+        title: "The item was updated successfuly!",
+        className: " bg-purple-100",
+      });
     } catch (error) {
       console.error("Error while updating task", error);
     }
   };
 
-  const handleEditMode = (taskId, title, description) => {
+  const handleTodoTextChange = (taskId, todoIndex, value) => {
+    // Update the editTaskData state directly
+    setEditTaskData((prevData) => {
+      const updatedTodoList = prevData.todoList.map((todo, index) => {
+        if (index === todoIndex) {
+          return { ...todo, title: value };
+        }
+        return todo;
+      });
+      return { ...prevData, todoList: updatedTodoList };
+    });
+
+    // Update the tasks state for the corresponding task
+    const updatedTasks = tasks.map((task) => {
+      if (task._id === taskId) {
+        const updatedTodoList = task.todoList.map((todo, index) => {
+          if (index === todoIndex) {
+            return { ...todo, title: value };
+          }
+          return todo;
+        });
+        return { ...task, todoList: updatedTodoList };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
+  };
+
+  const handleEditMode = (taskId, title, description, todoList) => {
     setEditTaskId(taskId);
-    setEditTaskData({ title, description });
+    setEditTaskData({ title, description, todoList });
   };
 
   const handleBlur = async (taskId) => {
@@ -180,6 +261,10 @@ const TasksListPage = () => {
   const handleDeleteTask = async (taskId) => {
     try {
       await api.delete(`/task/${taskId}`);
+      toast({
+        title: "The item was deleted successfuly!",
+        className: " bg-purple-100",
+      });
       setTasks(tasks.filter((task) => task._id !== taskId));
     } catch (error) {
       console.error("Error while deleting task", error);
@@ -191,17 +276,91 @@ const TasksListPage = () => {
   const otherTasks = tasks.filter((task) => !task.isPinned);
 
   return (
-    <div className="px-[5.5em] py-10">
+    <div className="px-[5.5em] py-10 pb-[5em]">
       <div className="mb-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Pinned Tasks</h2>
+        <div className="flex justify-center items-center bg-gradient-to-r from-purple-200 to-purple-300 rounded-lg p-6 mb-8 shadow-md hover:shadow-lg transform hover:scale-105 transition-transform">
+          <div className="w-16 h-16 bg-purple-400 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-500">
+            <MdTipsAndUpdates size={35} className=" ml-2" />
+          </div>
+          <div className="ml-6">
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">
+              Discover Something New!
+            </h3>
+            <p className="text-gray-600">
+              Explore our latest tips and tricks for staying organized and
+              productive.
+            </p>
+          </div>
+        </div>
+        <h2 className="text-2xl mt-[3em] tracking-wider dark:text-slate-300 font-bold text-purple-950 mb-4">
+          Your pinned tasks:
+        </h2>
+        <div className="flex justify-end mb-4">
+          <Popover>
+            <PopoverTrigger className="btn my-2 btn-primary font-semibold text-xl uppercase italic flex items-center ">
+              <>
+                Create New Task
+                <MdPostAdd
+                  size={33}
+                  className=" text-purple-800 animate-bounce font-extrabold mx-3"
+                />
+              </>
+            </PopoverTrigger>
+            <PopoverContent align="start" className="mt-2">
+              <div className="p-8 space-y-4 bg-purple-200">
+                <div className=" flex flex-row items-center gap-8">
+                  <h2 className="text-xl font-semibold">Your new task</h2>
+                  <LuListTodo size={25} />
+                </div>
+                <input
+                  type="text"
+                  name="title"
+                  value={newTaskData.title}
+                  onChange={handleNewTaskInputChange}
+                  placeholder="Title"
+                  className="input rounded-md p-2"
+                />
+                <textarea
+                  name="description"
+                  value={newTaskData.description}
+                  onChange={handleNewTaskInputChange}
+                  placeholder="Description"
+                  className="textarea rounded-md p-2"
+                />
+                <textarea
+                  name="body"
+                  value={newTaskData.body}
+                  onChange={handleNewTaskInputChange}
+                  placeholder="Body"
+                  className="textarea rounded-md p-2"
+                />
+                <textarea
+                  name="todoList"
+                  value={newTaskData.todoList}
+                  onChange={handleNewTaskInputChange}
+                  placeholder="Todos"
+                  className="textarea rounded-md p-2"
+                />
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleAddTask}
+                    className="btn btn-primary text-xl font-medium"
+                  >
+                    Create task
+                  </button>
+                </div>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </div>
         <Carousel>
           <CarouselContent>
             {pinnedTasks.map((task) => (
               <CarouselItem key={task._id} className="max-w-[20em]">
-                <Card // Open modal on card click
+                <Card
                   className={`bg-white shadow-md transition duration-300 transform hover:scale-100 hover:shadow-lg ${
                     taskColors[task._id]
-                  } max-w-sm cursor-pointer `}
+                  } max-w-sm cursor-pointer`}
                 >
                   <CardHeader className="bg-purple-100 p-3 flex-row justify-between shadow-md items-center">
                     {editTaskId === task._id ? (
@@ -228,7 +387,7 @@ const TasksListPage = () => {
                         </Link>
                       </CardTitle>
                     )}
-                    <div className=" flex flex-row gap-2">
+                    <div className="flex flex-row gap-2">
                       <button>
                         <AiFillEdit
                           size={20}
@@ -236,7 +395,8 @@ const TasksListPage = () => {
                             handleEditMode(
                               task._id,
                               task.title,
-                              task.description
+                              task.description,
+                              task.todoList
                             )
                           }
                         />
@@ -318,7 +478,25 @@ const TasksListPage = () => {
                                 : "text-gray-800"
                             }`}
                           >
-                            {todo.title}
+                            {editTaskId === task._id ? (
+                              <textarea
+                                type="text"
+                                value={todo.title}
+                                onChange={(e) =>
+                                  handleTodoTextChange(
+                                    task._id,
+                                    index,
+                                    e.target.value
+                                  )
+                                }
+                                onBlur={() => handleBlur(task._id)}
+                                onKeyDown={(e) => handleKeyPress(e, task._id)}
+                                className="w-full bg-transparent border-none outline-none"
+                                onFocus={(e) => e.target.select()}
+                              />
+                            ) : (
+                              todo.title
+                            )}
                           </span>
                         </label>
                       </div>
@@ -340,12 +518,12 @@ const TasksListPage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {otherTasks.map((task) => (
             <Card
-              key={task._id}
+              key={task._id} // Add the key prop here
               className={`bg-white shadow-md transition duration-300 transform hover:scale-100 hover:shadow-lg ${
                 taskColors[task._id]
-              } max-w-sm `}
+              } max-w-sm cursor-pointer`}
             >
-              <CardHeader className="bg-purple-100 p-3 flex-row justify-between items-center">
+              <CardHeader className="bg-purple-100 p-3 flex-row justify-between shadow-md items-center">
                 {editTaskId === task._id ? (
                   <textarea
                     ref={inputRef}
@@ -363,24 +541,36 @@ const TasksListPage = () => {
                   />
                 ) : (
                   <CardTitle className="text-lg font-bold text-gray-800">
-                    {task.title}
+                    <Link to={`/task/${task._id}`}>
+                      <h2 className="text-lg font-bold text-gray-800">
+                        {task.title}
+                      </h2>
+                    </Link>
                   </CardTitle>
                 )}
-                <div className=" flex flex-row gap-2">
+                <div className="flex flex-row gap-2">
                   <button>
                     <AiFillEdit
                       size={20}
                       onClick={() =>
-                        handleEditMode(task._id, task.title, task.description)
+                        handleEditMode(
+                          task._id,
+                          task.title,
+                          task.description,
+                          task.todoList
+                        )
                       }
                     />
                   </button>
                   <button onClick={() => handlePinToggle(task._id)}>
                     <TbPinned size={20} />
                   </button>
+                  <button onClick={() => handleDeleteTask(task._id)}>
+                    <MdDeleteForever size={20} />
+                  </button>
                 </div>
               </CardHeader>
-              <CardContent className="p-4">
+              <CardContent className="p-4 text-wrap">
                 {editTaskId === task._id ? (
                   <textarea
                     type="text"
@@ -444,7 +634,25 @@ const TasksListPage = () => {
                             : "text-gray-800"
                         }`}
                       >
-                        {todo.title}
+                        {editTaskId === task._id ? (
+                          <textarea
+                            type="text"
+                            value={todo.title}
+                            onChange={(e) =>
+                              handleTodoTextChange(
+                                task._id,
+                                index,
+                                e.target.value
+                              )
+                            }
+                            onBlur={() => handleBlur(task._id)}
+                            onKeyDown={(e) => handleKeyPress(e, task._id)}
+                            className="w-full bg-transparent border-none outline-none"
+                            onFocus={(e) => e.target.select()}
+                          />
+                        ) : (
+                          todo.title
+                        )}
                       </span>
                     </label>
                   </div>

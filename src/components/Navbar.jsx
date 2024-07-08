@@ -75,7 +75,7 @@ function Navbar() {
               <AvatarFallback className=" bg-purple-200">
                 {loggedInUser?.username
                   ? loggedInUser.username.toUpperCase()
-                  : "?"}
+                  : null}
               </AvatarFallback>
             </Avatar>
           </DropdownMenuTrigger>
@@ -86,7 +86,7 @@ function Navbar() {
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <Link to="/profile-settings">Profile Settings</Link>
+                <Link to="/profile">Profile Settings</Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>

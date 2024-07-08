@@ -1,6 +1,7 @@
 import React from "react";
 import letter from "../imgs/letter.jpg";
 import { FaFacebook, FaLinkedin, FaInstagram, FaTwitter } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -30,30 +31,30 @@ function Footer() {
         </div>
         <div className="flex justify-center py-10 space-x-4">
           {/* Social media icons */}
-          <a
+          <Link
             href="#"
             className="text-white hover:text-gray-200 transition duration-300"
           >
-            <FaFacebook className="text-2xl" />
-          </a>
-          <a
+            <FaFacebook className="text-[2em]" />
+          </Link>
+          <Link
             href="#"
             className="text-white hover:text-gray-200 transition duration-300"
           >
-            <FaTwitter className="text-2xl" />
-          </a>
-          <a
+            <FaTwitter className="text-[2em]" />
+          </Link>
+          <Link
             href="#"
             className="text-white hover:text-gray-200 transition duration-300"
           >
-            <FaInstagram className="text-2xl" />
-          </a>
-          <a
+            <FaInstagram className="text-[2em]" />
+          </Link>
+          <Link
             href="#"
             className="text-white hover:text-gray-200 transition duration-300"
           >
-            <FaLinkedin className="text-2xl" />
-          </a>
+            <FaLinkedin className="text-[2em]" />
+          </Link>
         </div>
       </section>
     </div>

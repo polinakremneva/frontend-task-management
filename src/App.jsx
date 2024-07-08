@@ -10,6 +10,8 @@ import TaskDetailsPage from "./pages/TaskDetailsPage";
 import { useAuth } from "./contexts/AuthProvider";
 import HistoryPage from "./pages/HistoryPage";
 import ContactPage from "./pages/ContactPage";
+import ChangePassword from "./pages/ChangePassword";
+import ProfileSettings from "./pages/ProfileSettings";
 
 function ProtectedRoute({ children }) {
   const { loggedInUser } = useAuth();
@@ -56,11 +58,27 @@ function App() {
             }
           />
           <Route
-            path="task/:id"
+            path="task/:taskId"
             element={
               <ProtectedRoute>
                 <TaskDetailsPage />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute>
+                <ProfileSettings />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/changePassword"
+            element={
+              <AuthRoute>
+                <ChangePassword />
+              </AuthRoute>
             }
           />
         </Route>

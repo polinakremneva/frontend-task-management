@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -47,13 +48,13 @@ function AboutPage() {
               handled with precision and clarity.
             </p>
             <div className="flex items-center">
-              <a
+              <Link
                 href="/about"
                 className="text-lg font-semibold text-purple-700 hover:bg-purple-100 py-2 px-4 rounded-md flex items-center transition duration-300"
               >
                 See More
                 <CgMoreO className="pl-2 text-2xl" />
-              </a>
+              </Link>
             </div>
           </div>
         </DropdownMenuContent>

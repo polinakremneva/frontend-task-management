@@ -80,16 +80,16 @@ const HomePage = () => {
         </section>
 
         <section
-          className="py-12 bg-cover bg-center h-screen"
+          className="my-12 md:my-0 bg-cover bg-center h-screen"
           style={{
             backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 20%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0.2) 60%, rgba(255, 255, 255, 0.1) 80%, rgba(255, 255, 255, 0) 100%), url(${bg2})`,
           }}
         >
-          <div className="max-w-5xl mx-auto text-center py-14">
-            <h2 className="text-3xl font-bold mb-10 text-white drop-shadow-xl">
+          <div className="max-w-5xl mx-auto text-center py-24 md:my-10">
+            <h2 className="text-3xl font-bold py-16 md:mb-0 text-white drop-shadow-xl">
               Discover More Features
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-3">
               <div className=" dark:bg-gray-900 group p-6 bg-white rounded-md shadow-md transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
                 <FaRocket className="text-purple-700 text-4xl mb-4 group-hover:rotate-45 transform transition duration-500" />
                 <h3 className="text-xl font-bold mb-2">Advanced Analytics</h3>

@@ -6,7 +6,7 @@ function AuthLayout() {
   return (
     <div>
       <Navbar />
-      <div className="flex items-center justify-center mt-[5em] flex-grow">
+      <div className="flex items-center justify-center flex-grow">
         <Outlet />
       </div>
     </div>
