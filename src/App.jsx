@@ -12,6 +12,7 @@ import HistoryPage from "./pages/HistoryPage";
 import ContactPage from "./pages/ContactPage";
 import ChangePassword from "./pages/ChangePassword";
 import ProfileSettings from "./pages/ProfileSettings";
+import AboutPage from "./pages/AboutPage";
 
 function ProtectedRoute({ children }) {
   const { loggedInUser } = useAuth();
@@ -46,7 +47,8 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="about" element={<HistoryPage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="history" element={<HistoryPage />} />
           <Route path="contact" element={<ContactPage />} />
 
           <Route

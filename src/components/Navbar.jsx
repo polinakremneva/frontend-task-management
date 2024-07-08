@@ -22,6 +22,7 @@ const MySwal = withReactContent(Swal);
 function Navbar() {
   const { loggedInUser, logout } = useAuth();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [settingsMenuOpen, setSettingsMenuOpen] = useState(false); // State for settings menu
 
   const handleAvatarClick = () => {
     if (!loggedInUser) {
@@ -46,6 +47,48 @@ function Navbar() {
           <GiNotebook className="text-[2em] text-violet-900" />
         </Link>
       </div>
+      {/* Mobile Menu Button */}
+      <div className="block sm:hidden">
+        <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+          <DropdownMenuTrigger onClick={() => setMenuOpen(!menuOpen)}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {menuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              )}
+            </svg>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>
+              <Link to="/history">About</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="contact">Contact</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Link to="task">Tasks</Link>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
+      {/* Desktop Navigation */}
       <nav className="hidden sm:flex flex-grow justify-center">
         <ul className="flex gap-5">
           <li>
@@ -68,7 +111,10 @@ function Navbar() {
             Login
           </Link>
         )}
-        <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
+        <DropdownMenu
+          open={settingsMenuOpen}
+          onOpenChange={setSettingsMenuOpen}
+        >
           <DropdownMenuTrigger onClick={handleAvatarClick}>
             <Avatar className="h-8 w-8">
               <AvatarImage src={loggedInUser?.imgUrl} />
