@@ -65,22 +65,6 @@ const TasksListPage = () => {
     }));
   };
 
-  const handleAddTask = async () => {
-    try {
-      const response = await api.post("/task", {
-        ...newTaskData,
-      });
-
-      setTasks([...tasks, response.data]);
-      toast({
-        title: "The item was added successfuly!",
-        className: " bg-purple-100",
-      });
-    } catch (error) {
-      console.error("Error creating new task", error);
-    }
-  };
-
   const lightBackgrounds = [
     "bg-blue-200",
     "bg-green-200",
@@ -123,6 +107,25 @@ const TasksListPage = () => {
 
   const inputRef = useRef(null);
 
+  const handleAddTask = async () => {
+    try {
+      const response = await api.post("/task", {
+        ...newTaskData,
+      });
+
+      setTasks([...tasks, response.data]);
+      setTaskColors((prevColors) => ({
+        ...prevColors,
+        [response.data._id]: getRandomBackground(),
+      }));
+      toast({
+        title: "The item was added successfuly!",
+        className: " bg-purple-100",
+      });
+    } catch (error) {
+      console.error("Error creating new task", error);
+    }
+  };
   const handleTodoToggle = async (taskId, todoIndex) => {
     try {
       const updatedTasks = tasks.map((task) => {
@@ -282,7 +285,7 @@ const TasksListPage = () => {
           <div className="w-16 h-16 bg-purple-400 rounded-full flex items-center justify-center cursor-pointer hover:bg-purple-500">
             <MdTipsAndUpdates size={35} className=" ml-2" />
           </div>
-          <div className="ml-6">
+          <div className="pl-6">
             <h3 className="text-lg font-semibold text-gray-800 mb-2">
               Discover Something New!
             </h3>
@@ -307,7 +310,7 @@ const TasksListPage = () => {
               </>
             </PopoverTrigger>
             <PopoverContent align="start" className="mt-2">
-              <div className="p-8 space-y-4 bg-purple-200">
+              <div className="p-4 space-y-4 bg-purple-200">
                 <div className=" flex flex-row items-center gap-8">
                   <h2 className="text-xl font-semibold">Your new task</h2>
                   <LuListTodo size={25} />
@@ -318,7 +321,7 @@ const TasksListPage = () => {
                   value={newTaskData.title}
                   onChange={handleNewTaskInputChange}
                   placeholder="Title"
-                  className="input rounded-md p-2"
+                  className="input rounded-md py-2"
                 />
                 <textarea
                   name="description"
@@ -399,6 +402,7 @@ const TasksListPage = () => {
                               task.todoList
                             )
                           }
+                          className=" dark:text-black"
                         />
                       </button>
                       <button
@@ -407,10 +411,13 @@ const TasksListPage = () => {
                           task.isPinned ? "text-black" : "text-white"
                         }`}
                       >
-                        <TbPinnedFilled size={20} />
+                        <TbPinnedFilled size={20} className="dark:text-black" />
                       </button>
                       <button onClick={() => handleDeleteTask(task._id)}>
-                        <MdDeleteForever size={20} />
+                        <MdDeleteForever
+                          size={20}
+                          className="dark:text-black"
+                        />
                       </button>
                     </div>
                   </CardHeader>
@@ -466,9 +473,9 @@ const TasksListPage = () => {
                             }`}
                           >
                             {todo.isComplete ? (
-                              <CheckCircle size={18} />
+                              <CheckCircle size={18} className="text-black" />
                             ) : (
-                              <Circle size={18} />
+                              <Circle size={18} className="dark:text-black" />
                             )}
                           </span>
                           <span
@@ -510,10 +517,9 @@ const TasksListPage = () => {
           <CarouselNext className="text-purple-900 right-[-2.5em]" />
         </Carousel>
       </div>
-
-      <div>
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          Unpinned Tasks
+      <div className=" py-[3em]">
+        <h2 className="text-2xl font-bold dark:text-gray-300 text-purple-950 pb-[3em]">
+          Unpinned Tasks:
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {otherTasks.map((task) => (
@@ -560,13 +566,14 @@ const TasksListPage = () => {
                           task.todoList
                         )
                       }
+                      className="dark:text-black"
                     />
                   </button>
                   <button onClick={() => handlePinToggle(task._id)}>
-                    <TbPinned size={20} />
+                    <TbPinned size={20} className="dark:text-black" />
                   </button>
                   <button onClick={() => handleDeleteTask(task._id)}>
-                    <MdDeleteForever size={20} />
+                    <MdDeleteForever size={20} className="dark:text-black" />
                   </button>
                 </div>
               </CardHeader>
@@ -622,9 +629,9 @@ const TasksListPage = () => {
                         }`}
                       >
                         {todo.isComplete ? (
-                          <CheckCircle size={18} />
+                          <CheckCircle size={18} className="dark:text-black" />
                         ) : (
-                          <Circle size={18} />
+                          <Circle size={18} className="dark:text-black" />
                         )}
                       </span>
                       <span

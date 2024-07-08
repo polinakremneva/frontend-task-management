@@ -37,10 +37,10 @@ function Navbar() {
   };
 
   return (
-    <header className="bg-white/5 mx-[3em] sm:px-10 py-2 flex justify-between shadow-sm items-center h-16">
-      <div className="flex items-center">
+    <header className="bg-white/5 sm:px-10 py-2 flex justify-between shadow-sm items-center h-16">
+      <div className="flex px-[3em] items-center gap-8">
         <Link
-          className="text-primary flex uppercase gap-2 font-bold text-2xl items-center"
+          className="text-primary flex tracking-wider gap-2 font-bold text-2xl items-center"
           to="/"
         >
           taskify
@@ -77,13 +77,19 @@ function Navbar() {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuItem>
-              <Link to="/history">About</Link>
+              <Link className="w-full" to="/history">
+                About
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link to="contact">Contact</Link>
+              <Link className="w-full" to="contact">
+                Contact
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link to="task">Tasks</Link>
+              <Link className="w-full" to="task">
+                Tasks
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -97,18 +103,18 @@ function Navbar() {
           <li>
             <ContactPage />
           </li>
-          <li className="text-[2em]">
-            <Link to="/task">Tasks</Link>
+          <li className="text-[1.5em]  hover:text-white hover:bg-violet-700 font-semibold px-3 tracking-wider rounded transition-colors duration-300">
+            <Link to="/task">my tasks</Link>
           </li>
         </ul>
       </nav>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center px-[3em] gap-4">
         {!loggedInUser && (
           <Link
             to="/auth/login"
-            className="text-[1.2em] text-violet-700 border h-8 border-violet-700 hover:text-white hover:bg-violet-700 font-semibold px-3 tracking-wider rounded transition-colors duration-300"
+            className="text-[1.2em] text-violet-700 border h-8 border-violet-700 font-semibold px-3 tracking-wider rounded transition duration-300 ease-in-out transform hover:text-white hover:bg-gradient-to-r hover:from-purple-500 hover:to-violet-700 hover:shadow-lg hover:scale-105"
           >
-            Login
+            login
           </Link>
         )}
         <DropdownMenu

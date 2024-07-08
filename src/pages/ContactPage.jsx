@@ -23,8 +23,8 @@ function ContactPage() {
     <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild>
-          <span className="cursor-pointer text-[2em] flex items-center">
-            Contacts
+          <span className="cursor-pointer text-[1.5em]  hover:text-white hover:bg-violet-700 font-semibold px-3 tracking-wider rounded transition-colors duration-300 flex items-center">
+            contacts
             <ChevronDown
               className={`ml-1 transition-transform duration-300 ${
                 isOpen ? "rotate-180" : ""
