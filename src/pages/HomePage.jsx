@@ -50,7 +50,7 @@ const HomePage = () => {
         </section>
 
         {/* Feature Section */}
-        <section className="py-[6em] dark:bg-gray-900">
+        <section className="lg:py-[6em] py-[4em] dark:bg-gray-900">
           <div className="max-w-5xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-8">Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -90,7 +90,7 @@ const HomePage = () => {
               Discover More Features
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-3">
-              <div className=" dark:bg-gray-900 group p-6 bg-white rounded-md shadow-md transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+              <div className=" dark:bg-gray-900 mx-3 group p-6 bg-white rounded-md shadow-md transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
                 <FaRocket className="text-purple-700 text-4xl mb-4 group-hover:rotate-45 transform transition duration-500" />
                 <h3 className="text-xl font-bold mb-2">Advanced Analytics</h3>
                 <p className="text-gray-700 mb-4 dark:text-gray-200">
@@ -103,7 +103,7 @@ const HomePage = () => {
                   </button>
                 </Link>
               </div>
-              <div className="dark:bg-gray-900 group p-6 bg-white rounded-md shadow-md transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+              <div className="dark:bg-gray-900 mx-3 group p-6 bg-white rounded-md shadow-md transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
                 <FaBell className="text-purple-700 text-4xl mb-4 group-hover:rotate-45 transform transition duration-500" />
                 <h3 className="text-xl font-bold mb-2">Custom Notifications</h3>
                 <p className="text-gray-700 mb-4 dark:text-gray-200">
@@ -115,7 +115,7 @@ const HomePage = () => {
                   </button>
                 </Link>
               </div>
-              <div className="dark:bg-gray-900 group p-6 bg-white rounded-md shadow-md transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+              <div className="dark:bg-gray-900 mx-3 group p-6 bg-white rounded-md shadow-md transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
                 <FaSyncAlt className="text-purple-700 text-4xl mb-4 group-hover:rotate-180 transform transition duration-500" />
                 <h3 className="text-xl font-bold mb-2">Seamless Integration</h3>
                 <p className="text-gray-700 mb-4 dark:text-gray-200">
@@ -133,11 +133,11 @@ const HomePage = () => {
         </section>
 
         {/* Testimonials Section */}
-        <section className="py-24 bg-gray-50 dark:bg-slate-900">
+        <section className=" py-10 lg:py-24 bg-gray-50 dark:bg-slate-900">
           <div className="max-w-5xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-8">What Our Users Say</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="p-6 bg-white rounded-md shadow-md">
+              <div className="p-6 mx-3 bg-white rounded-md shadow-md">
                 <p className="text-gray-700 mb-4">
                   "This app has completely transformed the way I manage my
                   tasks. Highly recommended!"
@@ -154,7 +154,7 @@ const HomePage = () => {
                   </div>
                 </div>
               </div>
-              <div className="p-6 bg-white rounded-md shadow-md">
+              <div className="p-6 mx-3 bg-white rounded-md shadow-md">
                 <p className="text-gray-700 mb-4">
                   "Efficient and easy to use. It has helped me stay organized
                   and meet deadlines."

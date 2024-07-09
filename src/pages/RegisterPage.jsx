@@ -98,7 +98,7 @@ function RegisterPage() {
         backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 20%, rgba(255, 255, 255, 0.7) 40%, rgba(255, 255, 255, 0.4) 60%, rgba(255, 255, 255, 0.1) 80%, rgba(255, 255, 255, 0) 100%), url(${bg3})`,
       }}
     >
-      <Card className="shadow-2xl mt-[1.5em] w-full md:max-w-xl lg:mx-auto">
+      <Card className="shadow-2xl mt-[1.5em] lg:mt-[5em] w-full md:max-w-xl lg:mx-auto">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
             <span>Register</span> <LogIn />
