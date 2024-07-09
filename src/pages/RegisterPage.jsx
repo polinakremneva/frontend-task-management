@@ -12,111 +12,25 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { LogIn } from "lucide-react";
-import { useAuth } from "@/contexts/AuthProvider";
 import TooltipIcon from "@/components/ToolTip";
+import { useAuth } from "@/contexts/AuthProvider";
 import { useToast } from "@/components/ui/use-toast";
 import api from "@/services/api.service";
 import bg3 from "../imgs/bg3.jpg";
 
 function RegisterPage() {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+
   const [passwordValid, setPasswordValid] = useState(false);
-
-  const [usernameAvailable, setUsernameAvailable] = useState(true); // Track username availability
-  const [emailAvailable, setEmailAvailable] = useState(true); // Track email availability
-
-  const { toast } = useToast();
-  const { register } = useAuth();
-  const navigate = useNavigate();
-
-  const checkUsernameAvailability = async (username) => {
-    try {
-      const response = await fetch(
-        `http://localhost:3000/api/auth/check-username/${username}`, // Corrected URL format
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("Expected JSON response from server");
-      }
-
-      const data = await response.json();
-      setUsernameAvailable(data.available);
-    } catch (error) {
-      console.error("Error checking username availability:", error);
-      setUsernameAvailable(false); // Default to false on error or unavailable
-    }
-  };
-
-  const checkEmailAvailability = async (email) => {
-    try {
-      if (!email.includes("@")) {
-        setEmailAvailable(false);
-        return;
-      }
-      const response = await fetch(
-        `http://localhost:3000/api/auth/check-email/${email}`, // Corrected URL format
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const contentType = response.headers.get("content-type");
-      if (!contentType || !contentType.includes("application/json")) {
-        throw new Error("Expected JSON response from server");
-      }
-
-      const data = await response.json();
-      setEmailAvailable(data.available);
-    } catch (error) {
-      console.error("Error checking username availability:", error);
-      setEmailAvailable(false); // Default to false on error or unavailable
-    }
-  };
-
-  const handleSubmit = async (ev) => {
-    ev.preventDefault();
-    const userData = {
-      username,
-      password,
-      firstName,
-      lastName,
-      email,
-    };
-
-    try {
-      await register(userData);
-      toast({
-        title: "You have been registered successful!",
-        description: "Welcome:)",
-        className: " bg-purple-100",
-      });
-      navigate("/auth/login");
-    } catch (error) {
-      console.error("Error registering:", error);
-    }
-  };
+  const [usernameAvailable, setUsernameAvailable] = useState(true); // Example state, adjust as per your logic
+  const [emailAvailable, setEmailAvailable] = useState(true); // Example state, adjust as per your logic
 
   const handlePasswordChange = (e) => {
     const newPassword = e.target.value;
@@ -129,30 +43,62 @@ function RegisterPage() {
     setPasswordValid(isValid);
   };
 
-  const handleUsernameChange = async (e) => {
-    const newUsername = e.target.value;
-    setUsername(newUsername);
-    if (newUsername.trim() !== "") {
-      await checkUsernameAvailability(newUsername);
-    }
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+    // Example logic to check username availability
+    setUsernameAvailable(true); // Replace with your availability check
   };
 
-  const handleEmailChange = async (e) => {
-    const newEmail = e.target.value;
-    setEmail(newEmail);
-    if (newEmail.trim() !== "") {
-      await checkEmailAvailability(newEmail);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    // Example logic to check email availability
+    setEmailAvailable(true); // Replace with your availability check
+  };
+
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+
+    try {
+      const response = await api.post("/auth/register", {
+        username,
+        password,
+        email,
+        firstName,
+        lastName,
+      });
+
+      if (response.data.error) {
+        toast({
+          title: response.data.error,
+          description: "Please, try again!",
+          className: "bg-red-100 text-black ",
+        });
+      } else {
+        toast({
+          title: "You have been registered successfully!",
+          description: "Welcome :)",
+          className: "bg-purple-100 text-black",
+        });
+        navigate("/auth/login");
+      }
+    } catch (error) {
+      console.error("Error registering:", error);
+      toast({
+        title: "Registration failed",
+        description: "Please try again later.",
+        className: "bg-red-100",
+      });
     }
   };
 
   return (
     <div
-      className="bg-cover w-full h-screen bg-center"
+      className="bg-cover w-full h-screen bg-center px-5"
       style={{
         backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.9) 20%, rgba(255, 255, 255, 0.7) 40%, rgba(255, 255, 255, 0.4) 60%, rgba(255, 255, 255, 0.1) 80%, rgba(255, 255, 255, 0) 100%), url(${bg3})`,
       }}
     >
-      <Card className="shadow-2xl mt-[5em] w-full md:max-w-xl mx-auto">
+      <Card className="shadow-2xl mt-[1.5em] w-full md:max-w-xl lg:mx-auto">
         <CardHeader>
           <CardTitle className="flex justify-between items-center">
             <span>Register</span> <LogIn />

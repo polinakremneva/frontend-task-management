@@ -31,6 +31,17 @@ import {
 import { AiFillEdit } from "react-icons/ai";
 import { MdDeleteForever } from "react-icons/md";
 import { useToast } from "@/components/ui/use-toast";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 Modal.setAppElement("#root");
 
@@ -106,6 +117,31 @@ const TasksListPage = () => {
   };
 
   const inputRef = useRef(null);
+
+  const handleAddTodo = async (taskId, todo) => {
+    const updatedTasks = tasks.map((task) => {
+      if (task._id === taskId) {
+        const updatedTodoList = [...task.todoList, todo];
+        return { ...task, todoList: updatedTodoList };
+      }
+      return task;
+    });
+
+    setTasks(updatedTasks);
+
+    // Update the server with the new todoList
+    const updatedTodoList = updatedTasks.find(
+      (task) => task._id === taskId
+    ).todoList;
+
+    // Assuming api.post(`/task/${taskId}`, { todoList: updatedTodoList }) handles updating todoList on server
+    // Uncomment the following lines if you need to update todoList on server
+    try {
+      await api.post(`/task/${taskId}`, { todoList: updatedTodoList });
+    } catch (error) {
+      console.error("Error while updating todoList", error);
+    }
+  };
 
   const handleAddTask = async () => {
     try {
@@ -265,12 +301,12 @@ const TasksListPage = () => {
     try {
       await api.delete(`/task/${taskId}`);
       toast({
-        title: "The item was deleted successfuly!",
-        className: " bg-purple-100",
+        title: "Task was deleted successfuly!",
+        className: "bg-purple-100",
       });
-      setTasks(tasks.filter((task) => task._id !== taskId));
+      setTasks(tasks.filter((task) => task._id !== taskId)); // Обновление списка задач без удаленной задачи
     } catch (error) {
-      console.error("Error while deleting task", error);
+      console.error("Error while deleting", error);
     }
   };
 
@@ -413,12 +449,39 @@ const TasksListPage = () => {
                       >
                         <TbPinnedFilled size={20} className="dark:text-black" />
                       </button>
-                      <button onClick={() => handleDeleteTask(task._id)}>
-                        <MdDeleteForever
-                          size={20}
-                          className="dark:text-black"
-                        />
-                      </button>
+                      <AlertDialog>
+                        <AlertDialogTrigger>
+                          <MdDeleteForever
+                            size={20}
+                            className="dark:text-black"
+                          />
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>
+                              Are you absolutely sure?
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                              This action cannot be undone. This will
+                              permanently delete your account and remove your
+                              data from our servers.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel className="bg-purple-200 ">
+                              Cancel
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                              onClick={() => {
+                                handleDeleteTask(task._id);
+                              }}
+                              className="bg-fuchsia-400 text-black border hover:bg-fuchsia-900 hover:text-white"
+                            >
+                              Continue
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
                     </div>
                   </CardHeader>
                   <CardContent className="p-4 text-wrap">
@@ -572,9 +635,36 @@ const TasksListPage = () => {
                   <button onClick={() => handlePinToggle(task._id)}>
                     <TbPinned size={20} className="dark:text-black" />
                   </button>
-                  <button onClick={() => handleDeleteTask(task._id)}>
-                    <MdDeleteForever size={20} className="dark:text-black" />
-                  </button>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <MdDeleteForever size={20} className="dark:text-black" />
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you absolutely sure?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your account and remove your data from our
+                          servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-purple-200 ">
+                          Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => {
+                            handleDeleteTask(task._id);
+                          }}
+                          className="bg-fuchsia-400 text-black border hover:bg-fuchsia-900 hover:text-white"
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </div>
               </CardHeader>
               <CardContent className="p-4 text-wrap">

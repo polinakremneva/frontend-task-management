@@ -48,7 +48,7 @@ function HistoryPage() {
   ];
 
   return (
-    <div className="w-3xl px-[6em]  py-[3em]">
+    <div className="lg:w-3xl w-full px-5 lg:px-2 py-10 lg:py-[3em]">
       <section className="mb-[5em] px-7 py-5 rounded-lg shadow-md bg-slate-200 dark:text-gray-300 dark:bg-transparent">
         <div className="flex items-center mb-8 mt-4 justify-center">
           <hr className="w-[7em] mx-3 h-3 my-8 bg-purple-800 border-0 rounded md:my-12 dark:bg-gray-700" />
@@ -129,8 +129,8 @@ function HistoryPage() {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-[-3em] dark:text-black bg-slate-300 hover:bg-slate-400" />
-          <CarouselNext className="right-[-3em] dark:text-black bg-slate-300 hover:bg-slate-400" />
+          <CarouselPrevious className="lg:left-[-3em] left-[-1em] dark:text-black bg-slate-300 hover:bg-slate-400" />
+          <CarouselNext className="lg:right-[-3em] right-[-1em] dark:text-black bg-slate-300 hover:bg-slate-400" />
         </Carousel>
       </section>
     </div>

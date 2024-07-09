@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
   async function register(userData) {
     try {
       const response = await api.post("/auth/register", userData);
+      console.log(response.data);
       // setToken(response.data.token);
       navigate("/auth/login");
     } catch (error) {
