@@ -96,8 +96,8 @@ function Navbar() {
         </DropdownMenu>
       </div>
       {/* Desktop Navigation */}
-      <nav className="hidden sm:flex flex-grow justify-center">
-        <ul className="flex gap-5">
+      <nav className="hidden sm:flex flex-grow items-centerjustify-center">
+        <ul className="flex items-center gap-5">
           <li>
             <AboutPage />
           </li>

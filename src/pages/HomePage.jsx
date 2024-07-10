@@ -80,7 +80,7 @@ const HomePage = () => {
         </section>
 
         <section
-          className="lg:my-12 bg-cover bg-center h-screen"
+          className="lg:my-12 py-4 bg-cover bg-center lg:h-screen"
           style={{
             backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.6) 20%, rgba(255, 255, 255, 0.4) 40%, rgba(255, 255, 255, 0.2) 60%, rgba(255, 255, 255, 0.1) 80%, rgba(255, 255, 255, 0) 100%), url(${bg2})`,
           }}

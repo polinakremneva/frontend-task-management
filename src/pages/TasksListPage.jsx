@@ -64,7 +64,7 @@ const TasksListPage = () => {
   const [newTaskData, setNewTaskData] = useState({
     title: "",
     description: "",
-    main: "",
+    body: "",
     todoList: "",
   });
 
@@ -118,36 +118,9 @@ const TasksListPage = () => {
 
   const inputRef = useRef(null);
 
-  const handleAddTodo = async (taskId, todo) => {
-    const updatedTasks = tasks.map((task) => {
-      if (task._id === taskId) {
-        const updatedTodoList = [...task.todoList, todo];
-        return { ...task, todoList: updatedTodoList };
-      }
-      return task;
-    });
-
-    setTasks(updatedTasks);
-
-    // Update the server with the new todoList
-    const updatedTodoList = updatedTasks.find(
-      (task) => task._id === taskId
-    ).todoList;
-
-    // Assuming api.post(`/task/${taskId}`, { todoList: updatedTodoList }) handles updating todoList on server
-    // Uncomment the following lines if you need to update todoList on server
-    try {
-      await api.post(`/task/${taskId}`, { todoList: updatedTodoList });
-    } catch (error) {
-      console.error("Error while updating todoList", error);
-    }
-  };
-
   const handleAddTask = async () => {
     try {
-      const response = await api.post("/task", {
-        ...newTaskData,
-      });
+      const response = await api.post("/task", { ...newTaskData });
 
       setTasks([...tasks, response.data]);
       setTaskColors((prevColors) => ({
@@ -158,10 +131,22 @@ const TasksListPage = () => {
         title: "The item was added successfuly!",
         className: " bg-purple-100",
       });
+      setNewTaskData({
+        title: "",
+        description: "",
+        body: "",
+        todoList: "",
+      });
     } catch (error) {
       console.error("Error creating new task", error);
+      toast({
+        title: "Error creating new task",
+        description: error.response?.data?.message || "An error occurred",
+        className: "bg-red-100 dark:text-black",
+      });
     }
   };
+
   const handleTodoToggle = async (taskId, todoIndex) => {
     try {
       const updatedTasks = tasks.map((task) => {
